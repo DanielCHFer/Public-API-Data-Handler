@@ -41,10 +41,18 @@ public class ClasePrincipal {
 		JSONArray results = obj.getJSONObject("data").getJSONArray("results");
 		
 		for (int i = 0; i < results.length(); i++) {
-            JSONObject character = results.getJSONObject(i);
+			
+            JSONObject resultado = results.getJSONObject(i);
+            
+            JSONObject imagen = resultado.getJSONObject("thumbnail");
+            String urlImagen = imagen.getString("path") + "." + imagen.getString("extension");
+            
+            JSONObject serie = resultado.getJSONObject("series");
+            String nombreSerie = serie.getString("name");
+            System.out.println(nombreSerie);
             
             
-            Comic comicActual = new Comic(String.valueOf(character.getInt("id")),character.getString("title"),character.getString("description"),String.valueOf(character.getInt("pageCount")),String.valueOf(character.getInt("issueNumber")),null,character.getString("format"),null);
+            Comic comicActual = new Comic(String.valueOf(resultado.getInt("id")),resultado.getString("title"),resultado.getString("description"),String.valueOf(resultado.getInt("pageCount")),String.valueOf(resultado.getInt("issueNumber")),null,resultado.getString("format"),null);
         }
 	}
 	
