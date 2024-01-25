@@ -9,5 +9,5 @@ module ProyectoEvaluacionFinal {
 	requires org.apache.httpcomponents.httpclient;
 	requires org.apache.httpcomponents.httpcore;
 	requires org.json;
-	requires org.apache.servicemix.bundles.commons.codec;
+	requires org.apache.commons.codec;
 }

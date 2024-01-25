@@ -18,8 +18,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 
 import java.awt.Insets;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
