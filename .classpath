@@ -6,117 +6,27 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/commons-cli-1.5.0.jar">
+	<classpathentry kind="lib" path="C:/Users/daniel.chanclon/Desktop/proyectos/ProyectoEvaluacionFinal/Proyecto-Evaluacion-Final---Daniel-Chanclon/jar/org.apache.servicemix.bundles.commons-codec-1.2_5.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/httpclient5-5.3.jar">
+	<classpathentry kind="lib" path="C:/Users/daniel.chanclon/Desktop/proyectos/ProyectoEvaluacionFinal/Proyecto-Evaluacion-Final---Daniel-Chanclon/jar/commons-logging-1.2.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/httpclient5-cache-5.3.jar">
+	<classpathentry kind="lib" path="C:/Users/daniel.chanclon/Desktop/proyectos/ProyectoEvaluacionFinal/Proyecto-Evaluacion-Final---Daniel-Chanclon/jar/httpclient-4.5.14.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/httpclient5-fluent-5.3.jar">
+	<classpathentry kind="lib" path="C:/Users/daniel.chanclon/Desktop/proyectos/ProyectoEvaluacionFinal/Proyecto-Evaluacion-Final---Daniel-Chanclon/jar/httpcore-4.4.16.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/httpclient5-testing-5.3.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/httpcore5-5.2.4.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/httpcore5-h2-5.2.4.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/httpcore5-reactive-5.2.4.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/httpcore5-testing-5.2.4.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/reactive-streams-1.0.4.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/rxjava-2.2.21.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/rxjava-3.1.6.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/slf4j-api-1.7.36.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/commons-codec-1.16.0.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/commons-codec-1.16.0-javadoc.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/commons-codec-1.16.0-sources.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/commons-codec-1.16.0-tests.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/commons-codec-1.16.0-test-sources.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/commons-codec-1.11.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/commons-logging-1.2.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/httpclient-4.5.14.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/httpcore-4.4.16.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/PC/Desktop/jar/json-20231013.jar">
+	<classpathentry kind="lib" path="C:/Users/daniel.chanclon/Desktop/proyectos/ProyectoEvaluacionFinal/Proyecto-Evaluacion-Final---Daniel-Chanclon/jar/json-20231013.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
