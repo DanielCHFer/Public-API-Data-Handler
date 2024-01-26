@@ -11,13 +11,14 @@ import java.util.ArrayList;
 public class ConexionSQL {
 
 	public ConexionSQL() {
+		
 	}
 	
 	private Connection abrirConexion(String user, String password, String baseDeDatos) {
 		Connection conexion = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			String urlCon = "jdbc:mysql://localhost:3306/"+baseDeDatos;
+			String urlCon = "jdbc:mysql://viaduct.proxy.rlwy.net:35427/"+baseDeDatos;
 			conexion = DriverManager.getConnection(urlCon, user, password);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -29,9 +30,7 @@ public class ConexionSQL {
 	
 	public ArrayList<ArrayList<String>> ejecutarSentencia(String sentencia) {
 		
-		comprobarBBDD();
-		
-		Connection conexion = abrirConexion("root", "admin", "baseComics");
+		Connection conexion = abrirConexion("root", "cD2f-a-feg4cHE642gbA3ha13CGABHc6", "railway");
 		ResultSet resultado = null;
 		
 		ArrayList<ArrayList<String>> listaTuplas = new ArrayList<>();
@@ -58,30 +57,12 @@ public class ConexionSQL {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.err.println("SQL exception: " + e.getMessage());
 		}
 		cerrarConexion(conexion);
 		return listaTuplas;
 	}
 	
-	private void comprobarBBDD() {
-		
-		Connection conexion = abrirConexion("root", "admin", "");
-		
-		try {
-			Statement stmt = conexion.createStatement();
-			ResultSet resultSet = stmt.executeQuery("SHOW DATABASES LIKE 'baseComics'");
-			if (resultSet.next()) {
-				System.out.println("La base de datos existe");
-			} else {
-				stmt.executeUpdate("CREATE DATABASE baseComics");
-				stmt.execute("USE baseComics");
-				stmt.executeUpdate("CREATE TABLE comicsVenom (id VARCHAR(20), titulo VARCHAR(50), descripcion TEXT, numeroDePaginas VARCHAR(10), numeroPublicacion VARCHAR(10), serie VARCHAR(50), formato VARCHAR(50), imagen TEXT)");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		cerrarConexion(conexion);
-	}
 	
 	private void cerrarConexion(Connection conexion) {
 		try {

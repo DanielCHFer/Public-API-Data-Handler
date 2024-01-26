@@ -19,6 +19,7 @@ import javax.swing.JFileChooser;
 
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -82,6 +83,7 @@ public class VistaSQL extends JFrame {
 		panelSeleccionRuta.setLayout(null);
 		
 		textoRutaArchivo = new JTextField();
+		textoRutaArchivo.setEditable(false);
 		textoRutaArchivo.setHorizontalAlignment(SwingConstants.CENTER);
 		textoRutaArchivo.setForeground(new Color(255, 255, 255));
 		textoRutaArchivo.setBackground(new Color(0, 0, 20));
@@ -127,6 +129,25 @@ public class VistaSQL extends JFrame {
 		panelSeleccionRuta.add(checkboxBuscarSQL);
 		
 		JButton botonCargarDatos = new JButton("Cargar Datos");
+		botonCargarDatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+					ManejadorUniversal manejador = new ManejadorUniversal();
+					ArrayList<Comic> listaComicsActual = new ArrayList<>();
+					if (textoRutaArchivo.getText().equals("BASE DE DATOS")) {
+						 listaComicsActual = manejador.leerComicsSQL();
+					}
+					
+					DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+					modelo.setRowCount(0);
+					
+					for (Comic c: listaComicsActual) {
+						modelo.addRow(new Object[] {c.getId(),c.getTitulo(),c.getDescripcion(),c.getNumeroDePaginas(),c.getNumeroPublicacion(),c.getSerie(),c.getFormato(),c.getImagen()});
+					}
+					
+				
+			}
+		});
 		botonCargarDatos.setMargin(new Insets(2, 10, 2, 10));
 		botonCargarDatos.setForeground(Color.WHITE);
 		botonCargarDatos.setFont(new Font("Ebrima", Font.BOLD, 13));
@@ -157,5 +178,7 @@ public class VistaSQL extends JFrame {
 			}
 		));
 		scrollPane.setViewportView(table);
+		
+		
 	}
 }
