@@ -52,6 +52,9 @@ public class ClasePrincipal {
             
             
             Comic comicActual = new Comic(String.valueOf(resultado.getInt("id")),resultado.getString("title"),resultado.getString("description"),String.valueOf(resultado.getInt("pageCount")),String.valueOf(resultado.getInt("issueNumber")),nombreSerie,resultado.getString("format"),urlImagen);
+            
+            ConexionSQL conexion = new ConexionSQL();
+            conexion.ejecutarSentencia("INSERT INTO comicsVenom VALUES ('1','Verinos')");
         }
 	}
 	
