@@ -49,10 +49,12 @@ public class ClasePrincipal {
             
             JSONObject serie = resultado.getJSONObject("series");
             String nombreSerie = serie.getString("name");
-            System.out.println(nombreSerie);
             
             
-            Comic comicActual = new Comic(String.valueOf(resultado.getInt("id")),resultado.getString("title"),resultado.getString("description"),String.valueOf(resultado.getInt("pageCount")),String.valueOf(resultado.getInt("issueNumber")),null,resultado.getString("format"),null);
+            Comic comicActual = new Comic(String.valueOf(resultado.getInt("id")),resultado.getString("title"),resultado.getString("description"),String.valueOf(resultado.getInt("pageCount")),String.valueOf(resultado.getInt("issueNumber")),nombreSerie,resultado.getString("format"),urlImagen);
+            
+            ConexionSQL conexion = new ConexionSQL();
+            conexion.ejecutarSentencia("INSERT INTO comicsVenom VALUES ('1','Verinos')");
         }
 	}
 	

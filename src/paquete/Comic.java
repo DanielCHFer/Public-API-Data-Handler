@@ -13,7 +13,7 @@ public class Comic {
 	public Comic(String id, String titulo, String descripcion, String numeroDePaginas, String numeroPublicacion,
 			String serie, String formato, String imagen) {
 		this.id = id;
-		this.titulo = titulo;
+		this.titulo = titulo; 
 		this.descripcion = descripcion;
 		this.numeroDePaginas = numeroDePaginas;
 		this.numeroPublicacion = numeroPublicacion;
