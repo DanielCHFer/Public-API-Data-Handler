@@ -75,7 +75,7 @@ public class ConexionSQL {
 			} else {
 				stmt.executeUpdate("CREATE DATABASE baseComics");
 				stmt.execute("USE baseComics");
-				stmt.executeUpdate("CREATE TABLE comicsVenom (id VARCHAR(20), titulo VARCHAR(50), descripcion TEXT, numeroDePaginas VARCHAR(10), numeroPublicacion VARCHAR(10), serie VARCHAR(50), formato VARCHAR(50), imagen TEXT)");
+				stmt.executeUpdate("CREATE TABLE comicsVenom (id VARCHAR(20), titulo VARCHAR(100), descripcion TEXT, numeroDePaginas VARCHAR(10), numeroPublicacion VARCHAR(10), serie VARCHAR(50), formato VARCHAR(50), imagen TEXT)");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

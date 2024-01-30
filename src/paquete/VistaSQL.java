@@ -19,6 +19,7 @@ import javax.swing.JFileChooser;
 
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -30,6 +31,8 @@ public class VistaSQL extends JFrame {
 	private JPanel contentPane;
 	private JTextField textoRutaArchivo;
 	private JTable table;
+	
+	private ArrayList<Comic> listaComicsLeidos = new ArrayList<>();
 
 	/**
 	 * Launch the application.
@@ -51,6 +54,9 @@ public class VistaSQL extends JFrame {
 	 * Create the frame.
 	 */
 	public VistaSQL() {
+		
+		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 949, 609);
 		contentPane = new JPanel();
@@ -127,6 +133,7 @@ public class VistaSQL extends JFrame {
 		panelSeleccionRuta.add(checkboxBuscarSQL);
 		
 		JButton botonCargarDatos = new JButton("Cargar Datos");
+		
 		botonCargarDatos.setMargin(new Insets(2, 10, 2, 10));
 		botonCargarDatos.setForeground(Color.WHITE);
 		botonCargarDatos.setFont(new Font("Ebrima", Font.BOLD, 13));
@@ -157,5 +164,56 @@ public class VistaSQL extends JFrame {
 			}
 		));
 		scrollPane.setViewportView(table);
+		table.getColumnModel().getColumn(0).setPreferredWidth(15);
+		table.getColumnModel().getColumn(1).setPreferredWidth(90);
+		table.getColumnModel().getColumn(3).setPreferredWidth(30);
+		table.getColumnModel().getColumn(4).setPreferredWidth(45);
+		table.getColumnModel().getColumn(6).setPreferredWidth(20);
+		table.getColumnModel().getColumn(7).setPreferredWidth(25);
+		
+		JPanel panelSeleccionRuta_1 = new JPanel();
+		panelSeleccionRuta_1.setLayout(null);
+		panelSeleccionRuta_1.setPreferredSize(new Dimension(930, 70));
+		panelSeleccionRuta_1.setBorder(null);
+		panelSeleccionRuta_1.setBackground(new Color(10, 10, 61));
+		contentPane.add(panelSeleccionRuta_1);
+		
+		JButton btnCargarDatosApi = new JButton("Cargar Datos API");
+		btnCargarDatosApi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorComics manejador = new ManejadorComics();
+				AccesoApi accesoApi = new AccesoApi();
+				
+				manejador.insertarSQL(accesoApi.obtenerComicsApi());
+			}
+		});
+		btnCargarDatosApi.setMargin(new Insets(2, 10, 2, 10));
+		btnCargarDatosApi.setForeground(Color.WHITE);
+		btnCargarDatosApi.setFont(new Font("Ebrima", Font.BOLD, 13));
+		btnCargarDatosApi.setBackground(new Color(128, 128, 255));
+		btnCargarDatosApi.setBounds(49, 11, 133, 48);
+		
+		botonCargarDatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ManejadorComics manejadorComics = new ManejadorComics();
+				
+				DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+				modelo.setRowCount(0);
+				
+				if (textoRutaArchivo.getText().equals("BASE DE DATOS")) {
+					
+					listaComicsLeidos = manejadorComics.leerSQL();
+					
+					
+					
+					for (Comic comicActual: listaComicsLeidos) {
+						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
+					}
+				}
+			}
+		});
+		
+		panelSeleccionRuta_1.add(btnCargarDatosApi);
 	}
 }
