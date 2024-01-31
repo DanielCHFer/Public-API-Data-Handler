@@ -24,6 +24,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class VistaSQL extends JFrame {
 
@@ -173,7 +175,7 @@ public class VistaSQL extends JFrame {
 		
 		JPanel panelSeleccionRuta_1 = new JPanel();
 		panelSeleccionRuta_1.setLayout(null);
-		panelSeleccionRuta_1.setPreferredSize(new Dimension(930, 70));
+		panelSeleccionRuta_1.setPreferredSize(new Dimension(930, 60));
 		panelSeleccionRuta_1.setBorder(null);
 		panelSeleccionRuta_1.setBackground(new Color(10, 10, 61));
 		contentPane.add(panelSeleccionRuta_1);
@@ -191,7 +193,7 @@ public class VistaSQL extends JFrame {
 		btnCargarDatosApi.setForeground(Color.WHITE);
 		btnCargarDatosApi.setFont(new Font("Ebrima", Font.BOLD, 13));
 		btnCargarDatosApi.setBackground(new Color(128, 128, 255));
-		btnCargarDatosApi.setBounds(49, 11, 133, 48);
+		btnCargarDatosApi.setBounds(51, 11, 133, 32);
 		
 		botonCargarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -205,8 +207,12 @@ public class VistaSQL extends JFrame {
 					
 					listaComicsLeidos = manejadorComics.leerSQL();
 					
+					for (Comic comicActual: listaComicsLeidos) {
+						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
+					}
+				} else if (textoRutaArchivo.getText().endsWith(".xml")) {
 					
-					
+					listaComicsLeidos = manejadorComics.leerXML(textoRutaArchivo.getText());
 					for (Comic comicActual: listaComicsLeidos) {
 						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
 					}
@@ -215,5 +221,33 @@ public class VistaSQL extends JFrame {
 		});
 		
 		panelSeleccionRuta_1.add(btnCargarDatosApi);
+		
+		JComboBox comboBoxTipoArchivo = new JComboBox();
+		comboBoxTipoArchivo.setModel(new DefaultComboBoxModel(new String[] {"JSON", "XML", "SQL"}));
+		comboBoxTipoArchivo.setBounds(599, 12, 133, 32);
+		panelSeleccionRuta_1.add(comboBoxTipoArchivo);
+		
+		JButton btnExportarArchivo = new JButton("Exportar Archivo");
+		btnExportarArchivo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorComics manejador = new ManejadorComics();
+				
+				String tipoArchivo = (String) comboBoxTipoArchivo.getSelectedItem();
+				
+				switch (tipoArchivo) {
+				case "XML":
+					manejador.escribirXML(listaComicsLeidos, "comicsExportados.xml");
+					break;
+				case "SQL":
+					manejador.insertarSQL(listaComicsLeidos);
+				}
+			}
+		});
+		btnExportarArchivo.setMargin(new Insets(2, 10, 2, 10));
+		btnExportarArchivo.setForeground(Color.WHITE);
+		btnExportarArchivo.setFont(new Font("Ebrima", Font.BOLD, 13));
+		btnExportarArchivo.setBackground(new Color(128, 128, 255));
+		btnExportarArchivo.setBounds(742, 11, 133, 32);
+		panelSeleccionRuta_1.add(btnExportarArchivo);
 	}
 }
