@@ -10,6 +10,10 @@ public class Comic {
 	private String formato;
 	private String imagen;
 	
+	public Comic() {
+		
+	}
+	
 	public Comic(String id, String titulo, String descripcion, String numeroDePaginas, String numeroPublicacion,
 			String serie, String formato, String imagen) {
 		this.id = id;

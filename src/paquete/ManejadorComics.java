@@ -1,6 +1,7 @@
 package paquete;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringJoiner;
 
@@ -15,6 +16,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ManejadorComics {
 
@@ -110,7 +114,6 @@ public class ManejadorComics {
 			  
 		} catch(Exception e) {
 			  System.out.println(e.getMessage());
-		
 		} 
 		
 		return doc;
@@ -198,6 +201,30 @@ public class ManejadorComics {
 			e.printStackTrace();
 				
 		}
+	}
+	
+	public void escribirJSON(ArrayList<Comic> listaComics, String ruta) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+            objectMapper.writeValue(new File(ruta), listaComics);
+            System.out.println("Archivo JSON creado exitosamente.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public ArrayList<Comic> leerJSON(String rutaArchivo) {
+		ArrayList<Comic> listaComics = new ArrayList<>();
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		 try {
+			 listaComics = objectMapper.readValue(new File(rutaArchivo), new TypeReference<ArrayList<Comic>>() {});
+	     } catch (IOException e) {
+	         e.printStackTrace();
+	     }
+		 
+		 return listaComics;
 	}
 	
 }

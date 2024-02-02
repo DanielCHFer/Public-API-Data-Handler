@@ -5,10 +5,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Component;
@@ -19,6 +22,7 @@ import javax.swing.JFileChooser;
 
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -45,6 +49,8 @@ public class VistaSQL extends JFrame {
 				try {
 					VistaSQL frame = new VistaSQL();
 					frame.setVisible(true);
+					VistaComicIndividual vistaComic = new VistaComicIndividual();
+					vistaComic.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -56,6 +62,7 @@ public class VistaSQL extends JFrame {
 	 * Create the frame.
 	 */
 	public VistaSQL() {
+		setResizable(false);
 		
 		
 		
@@ -90,6 +97,7 @@ public class VistaSQL extends JFrame {
 		panelSeleccionRuta.setLayout(null);
 		
 		textoRutaArchivo = new JTextField();
+		textoRutaArchivo.setEditable(false);
 		textoRutaArchivo.setHorizontalAlignment(SwingConstants.CENTER);
 		textoRutaArchivo.setForeground(new Color(255, 255, 255));
 		textoRutaArchivo.setBackground(new Color(0, 0, 20));
@@ -103,8 +111,13 @@ public class VistaSQL extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser(".");
 				fileChooser.showOpenDialog(fileChooser);
-				String ruta = fileChooser.getSelectedFile().getAbsolutePath();                                       
-				textoRutaArchivo.setText(ruta);
+				String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+				if (ruta.endsWith(".xml") || ruta.endsWith(".json")) {
+					textoRutaArchivo.setText(ruta);
+				} else {
+					JOptionPane.showMessageDialog(null, "Por favor, escoja un archivo .xml o .json", "Tipo de archivo no válido", JOptionPane.ERROR_MESSAGE);
+				}
+				
 			}
 		});
 		
@@ -186,7 +199,21 @@ public class VistaSQL extends JFrame {
 				ManejadorComics manejador = new ManejadorComics();
 				AccesoApi accesoApi = new AccesoApi();
 				
-				manejador.insertarSQL(accesoApi.obtenerComicsApi());
+				ArrayList<Comic> comicsApi = new ArrayList<>();
+				try {
+					comicsApi = accesoApi.obtenerComicsApi();
+				} catch (Exception e1) {
+		            e1.printStackTrace();
+				}
+				
+				if (comicsApi.size()>0) {
+					manejador.insertarSQL(comicsApi);
+					JOptionPane.showMessageDialog(null, "Se han cargado "+comicsApi.size()+" registros en la base de datos", "Petición API exitosa", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "No se ha podido cargar ningún registro en la base de datos", "Error API", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
 			}
 		});
 		btnCargarDatosApi.setMargin(new Insets(2, 10, 2, 10));
@@ -216,6 +243,16 @@ public class VistaSQL extends JFrame {
 					for (Comic comicActual: listaComicsLeidos) {
 						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
 					}
+				} else if (textoRutaArchivo.getText().endsWith(".json")) {
+				
+				listaComicsLeidos = manejadorComics.leerJSON(textoRutaArchivo.getText());
+					for (Comic comicActual: listaComicsLeidos) {
+						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
+					}
+				}
+				
+				if (listaComicsLeidos.size() == 0) {
+					JOptionPane.showMessageDialog(null, "El archivo "+textoRutaArchivo.getText()+" no contiene ningún cómic", "Cómics no encontrados", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
@@ -231,15 +268,43 @@ public class VistaSQL extends JFrame {
 		btnExportarArchivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ManejadorComics manejador = new ManejadorComics();
-				
 				String tipoArchivo = (String) comboBoxTipoArchivo.getSelectedItem();
+				String rutaNuevoArchivo = "";
+				
+				if (!tipoArchivo.equals("SQL")) {
+					JFileChooser fileChooser = new JFileChooser(".");
+	                fileChooser.setDialogTitle("Seleccione la ubicación del archivo");
+	                fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+	                fileChooser.setSelectedFile(new File("comicsExportados."+tipoArchivo.toLowerCase()));
+	                FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML files (*.xml)", "xml");
+	                fileChooser.setFileFilter(xmlFilter);
+
+	                int userSelection = fileChooser.showSaveDialog(null);
+
+	                if (userSelection == JFileChooser.APPROVE_OPTION) {
+	                    File archivoGuardar = fileChooser.getSelectedFile();
+
+	                    rutaNuevoArchivo = archivoGuardar.getAbsolutePath();
+	                }
+				}
+				
+				if (!rutaNuevoArchivo.toLowerCase().endsWith("."+tipoArchivo.toLowerCase())) {
+					rutaNuevoArchivo += "."+tipoArchivo.toLowerCase();
+				}
 				
 				switch (tipoArchivo) {
 				case "XML":
-					manejador.escribirXML(listaComicsLeidos, "comicsExportados.xml");
+					manejador.escribirXML(listaComicsLeidos, rutaNuevoArchivo);
+					JOptionPane.showMessageDialog(null, "El archivo ha sido guardado como "+rutaNuevoArchivo, "Archivo creado", JOptionPane.INFORMATION_MESSAGE);
 					break;
 				case "SQL":
 					manejador.insertarSQL(listaComicsLeidos);
+					JOptionPane.showMessageDialog(null, "Se han insertado "+listaComicsLeidos.size()+" registros en la base de datos", "Tuplas insertadas", JOptionPane.INFORMATION_MESSAGE);
+					break;
+				case "JSON":
+					manejador.escribirJSON(listaComicsLeidos, rutaNuevoArchivo);
+					JOptionPane.showMessageDialog(null, "El archivo ha sido guardado como "+rutaNuevoArchivo, "Archivo creado", JOptionPane.INFORMATION_MESSAGE);
+					break;
 				}
 			}
 		});

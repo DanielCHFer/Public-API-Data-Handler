@@ -6,6 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="lib" path="E:/Programación/Proyectos/ProyectoEvaluacionFinal/jar/commons-codec-1.11.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -32,6 +33,21 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/Programación/Proyectos/ProyectoEvaluacionFinal/jar/mysql-connector-j-8.3.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="E:/Programación/Proyectos/ProyectoEvaluacionFinal/jar/jackson-annotations-2.16.1.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="E:/Programación/Proyectos/ProyectoEvaluacionFinal/jar/jackson-core-2.16.1.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="E:/Programación/Proyectos/ProyectoEvaluacionFinal/jar/jackson-databind-2.16.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
