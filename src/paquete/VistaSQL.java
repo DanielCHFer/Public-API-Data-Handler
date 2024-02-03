@@ -49,8 +49,6 @@ public class VistaSQL extends JFrame {
 				try {
 					VistaSQL frame = new VistaSQL();
 					frame.setVisible(true);
-					VistaComicIndividual vistaComic = new VistaComicIndividual();
-					vistaComic.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -67,7 +65,7 @@ public class VistaSQL extends JFrame {
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 949, 609);
+		setBounds(100, 100, 949, 677);
 		contentPane = new JPanel();
 		contentPane.setForeground(new Color(255, 255, 255));
 		contentPane.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -158,7 +156,7 @@ public class VistaSQL extends JFrame {
 		
 		JPanel panelDatos = new JPanel();
 		panelDatos.setBorder(new EmptyBorder(15, 50, 15, 50));
-		panelDatos.setPreferredSize(new Dimension(930, 300));
+		panelDatos.setPreferredSize(new Dimension(930, 400));
 		panelDatos.setBackground(new Color(10, 10, 61));
 		contentPane.add(panelDatos);
 		panelDatos.setLayout(new BorderLayout(0, 0));
@@ -179,6 +177,29 @@ public class VistaSQL extends JFrame {
 			}
 		));
 		scrollPane.setViewportView(table);
+		
+		JPanel panelSeleccionRuta_1_1 = new JPanel();
+		panelSeleccionRuta_1_1.setLayout(null);
+		panelSeleccionRuta_1_1.setPreferredSize(new Dimension(930, 45));
+		panelSeleccionRuta_1_1.setBorder(null);
+		panelSeleccionRuta_1_1.setBackground(new Color(10, 10, 61));
+		panelDatos.add(panelSeleccionRuta_1_1, BorderLayout.NORTH);
+		
+		JButton btnAbrirVistaIndividual = new JButton("Vista Detallada");
+		btnAbrirVistaIndividual.setEnabled(false);
+		btnAbrirVistaIndividual.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VistaIndividual vistaIndividual = new VistaIndividual(listaComicsLeidos);
+				vistaIndividual.setVisible(true);
+			}
+		});
+		
+		btnAbrirVistaIndividual.setMargin(new Insets(2, 10, 2, 10));
+		btnAbrirVistaIndividual.setForeground(Color.WHITE);
+		btnAbrirVistaIndividual.setFont(new Font("Ebrima", Font.BOLD, 13));
+		btnAbrirVistaIndividual.setBackground(new Color(0, 64, 128));
+		btnAbrirVistaIndividual.setBounds(0, 0, 133, 32);
+		panelSeleccionRuta_1_1.add(btnAbrirVistaIndividual);
 		table.getColumnModel().getColumn(0).setPreferredWidth(15);
 		table.getColumnModel().getColumn(1).setPreferredWidth(90);
 		table.getColumnModel().getColumn(3).setPreferredWidth(30);
@@ -227,32 +248,44 @@ public class VistaSQL extends JFrame {
 				
 				ManejadorComics manejadorComics = new ManejadorComics();
 				
+				ArrayList<Comic> listaNuevosComics = new ArrayList<>();
+				
 				DefaultTableModel modelo = (DefaultTableModel) table.getModel();
 				modelo.setRowCount(0);
 				
 				if (textoRutaArchivo.getText().equals("BASE DE DATOS")) {
 					
-					listaComicsLeidos = manejadorComics.leerSQL();
+					listaNuevosComics = manejadorComics.leerSQL();
+					listaComicsLeidos = listaNuevosComics;
 					
 					for (Comic comicActual: listaComicsLeidos) {
 						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
 					}
 				} else if (textoRutaArchivo.getText().endsWith(".xml")) {
 					
-					listaComicsLeidos = manejadorComics.leerXML(textoRutaArchivo.getText());
+					listaNuevosComics = manejadorComics.leerXML(textoRutaArchivo.getText());
+					listaComicsLeidos = listaNuevosComics;
 					for (Comic comicActual: listaComicsLeidos) {
 						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
 					}
 				} else if (textoRutaArchivo.getText().endsWith(".json")) {
 				
-				listaComicsLeidos = manejadorComics.leerJSON(textoRutaArchivo.getText());
+					listaNuevosComics = manejadorComics.leerJSON(textoRutaArchivo.getText());
+					listaComicsLeidos = listaNuevosComics;
 					for (Comic comicActual: listaComicsLeidos) {
 						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
 					}
 				}
 				
-				if (listaComicsLeidos.size() == 0) {
+				if (listaNuevosComics.size() == 0) {
 					JOptionPane.showMessageDialog(null, "El archivo "+textoRutaArchivo.getText()+" no contiene ningún cómic", "Cómics no encontrados", JOptionPane.INFORMATION_MESSAGE);
+				}
+				listaComicsLeidos = listaNuevosComics;
+				
+				if (listaNuevosComics.size() > 0) {
+					btnAbrirVistaIndividual.setEnabled(true);
+				} else {
+					btnAbrirVistaIndividual.setEnabled(false);
 				}
 			}
 		});
