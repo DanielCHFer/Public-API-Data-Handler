@@ -5,10 +5,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Component;
@@ -19,11 +22,14 @@ import javax.swing.JFileChooser;
 
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class VistaSQL extends JFrame {
 
@@ -31,6 +37,8 @@ public class VistaSQL extends JFrame {
 	private JPanel contentPane;
 	private JTextField textoRutaArchivo;
 	private JTable table;
+	
+	private ArrayList<Comic> listaComicsLeidos = new ArrayList<>();
 
 	/**
 	 * Launch the application.
@@ -52,8 +60,12 @@ public class VistaSQL extends JFrame {
 	 * Create the frame.
 	 */
 	public VistaSQL() {
+		setResizable(false);
+		
+		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 949, 609);
+		setBounds(100, 100, 949, 677);
 		contentPane = new JPanel();
 		contentPane.setForeground(new Color(255, 255, 255));
 		contentPane.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -97,8 +109,13 @@ public class VistaSQL extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser(".");
 				fileChooser.showOpenDialog(fileChooser);
-				String ruta = fileChooser.getSelectedFile().getAbsolutePath();                                       
-				textoRutaArchivo.setText(ruta);
+				String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+				if (ruta.endsWith(".xml") || ruta.endsWith(".json")) {
+					textoRutaArchivo.setText(ruta);
+				} else {
+					JOptionPane.showMessageDialog(null, "Por favor, escoja un archivo .xml o .json", "Tipo de archivo no válido", JOptionPane.ERROR_MESSAGE);
+				}
+				
 			}
 		});
 		
@@ -129,25 +146,7 @@ public class VistaSQL extends JFrame {
 		panelSeleccionRuta.add(checkboxBuscarSQL);
 		
 		JButton botonCargarDatos = new JButton("Cargar Datos");
-		botonCargarDatos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-					ManejadorUniversal manejador = new ManejadorUniversal();
-					ArrayList<Comic> listaComicsActual = new ArrayList<>();
-					if (textoRutaArchivo.getText().equals("BASE DE DATOS")) {
-						 listaComicsActual = manejador.leerComicsSQL();
-					}
-					
-					DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-					modelo.setRowCount(0);
-					
-					for (Comic c: listaComicsActual) {
-						modelo.addRow(new Object[] {c.getId(),c.getTitulo(),c.getDescripcion(),c.getNumeroDePaginas(),c.getNumeroPublicacion(),c.getSerie(),c.getFormato(),c.getImagen()});
-					}
-					
-				
-			}
-		});
+		
 		botonCargarDatos.setMargin(new Insets(2, 10, 2, 10));
 		botonCargarDatos.setForeground(Color.WHITE);
 		botonCargarDatos.setFont(new Font("Ebrima", Font.BOLD, 13));
@@ -157,7 +156,7 @@ public class VistaSQL extends JFrame {
 		
 		JPanel panelDatos = new JPanel();
 		panelDatos.setBorder(new EmptyBorder(15, 50, 15, 50));
-		panelDatos.setPreferredSize(new Dimension(930, 300));
+		panelDatos.setPreferredSize(new Dimension(930, 400));
 		panelDatos.setBackground(new Color(10, 10, 61));
 		contentPane.add(panelDatos);
 		panelDatos.setLayout(new BorderLayout(0, 0));
@@ -179,6 +178,174 @@ public class VistaSQL extends JFrame {
 		));
 		scrollPane.setViewportView(table);
 		
+		JPanel panelSeleccionRuta_1_1 = new JPanel();
+		panelSeleccionRuta_1_1.setLayout(null);
+		panelSeleccionRuta_1_1.setPreferredSize(new Dimension(930, 45));
+		panelSeleccionRuta_1_1.setBorder(null);
+		panelSeleccionRuta_1_1.setBackground(new Color(10, 10, 61));
+		panelDatos.add(panelSeleccionRuta_1_1, BorderLayout.NORTH);
 		
+		JButton btnAbrirVistaIndividual = new JButton("Vista Detallada");
+		btnAbrirVistaIndividual.setEnabled(false);
+		btnAbrirVistaIndividual.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VistaIndividual vistaIndividual = new VistaIndividual(listaComicsLeidos);
+				vistaIndividual.setVisible(true);
+			}
+		});
+		
+		btnAbrirVistaIndividual.setMargin(new Insets(2, 10, 2, 10));
+		btnAbrirVistaIndividual.setForeground(Color.WHITE);
+		btnAbrirVistaIndividual.setFont(new Font("Ebrima", Font.BOLD, 13));
+		btnAbrirVistaIndividual.setBackground(new Color(0, 64, 128));
+		btnAbrirVistaIndividual.setBounds(0, 0, 133, 32);
+		panelSeleccionRuta_1_1.add(btnAbrirVistaIndividual);
+		table.getColumnModel().getColumn(0).setPreferredWidth(15);
+		table.getColumnModel().getColumn(1).setPreferredWidth(90);
+		table.getColumnModel().getColumn(3).setPreferredWidth(30);
+		table.getColumnModel().getColumn(4).setPreferredWidth(45);
+		table.getColumnModel().getColumn(6).setPreferredWidth(20);
+		table.getColumnModel().getColumn(7).setPreferredWidth(25);
+		
+		JPanel panelSeleccionRuta_1 = new JPanel();
+		panelSeleccionRuta_1.setLayout(null);
+		panelSeleccionRuta_1.setPreferredSize(new Dimension(930, 60));
+		panelSeleccionRuta_1.setBorder(null);
+		panelSeleccionRuta_1.setBackground(new Color(10, 10, 61));
+		contentPane.add(panelSeleccionRuta_1);
+		
+		JButton btnCargarDatosApi = new JButton("Cargar Datos API");
+		btnCargarDatosApi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorComics manejador = new ManejadorComics();
+				AccesoApi accesoApi = new AccesoApi();
+				
+				ArrayList<Comic> comicsApi = new ArrayList<>();
+				try {
+					comicsApi = accesoApi.obtenerComicsApi();
+				} catch (Exception e1) {
+		            e1.printStackTrace();
+				}
+				
+				if (comicsApi.size()>0) {
+					manejador.insertarSQL(comicsApi);
+					JOptionPane.showMessageDialog(null, "Se han cargado "+comicsApi.size()+" registros en la base de datos", "Petición API exitosa", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "No se ha podido cargar ningún registro en la base de datos", "Error API", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			}
+		});
+		btnCargarDatosApi.setMargin(new Insets(2, 10, 2, 10));
+		btnCargarDatosApi.setForeground(Color.WHITE);
+		btnCargarDatosApi.setFont(new Font("Ebrima", Font.BOLD, 13));
+		btnCargarDatosApi.setBackground(new Color(128, 128, 255));
+		btnCargarDatosApi.setBounds(51, 11, 133, 32);
+		
+		botonCargarDatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ManejadorComics manejadorComics = new ManejadorComics();
+				
+				ArrayList<Comic> listaNuevosComics = new ArrayList<>();
+				
+				DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+				modelo.setRowCount(0);
+				
+				if (textoRutaArchivo.getText().equals("BASE DE DATOS")) {
+					
+					listaNuevosComics = manejadorComics.leerSQL();
+					listaComicsLeidos = listaNuevosComics;
+					
+					for (Comic comicActual: listaComicsLeidos) {
+						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
+					}
+				} else if (textoRutaArchivo.getText().endsWith(".xml")) {
+					
+					listaNuevosComics = manejadorComics.leerXML(textoRutaArchivo.getText());
+					listaComicsLeidos = listaNuevosComics;
+					for (Comic comicActual: listaComicsLeidos) {
+						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
+					}
+				} else if (textoRutaArchivo.getText().endsWith(".json")) {
+				
+					listaNuevosComics = manejadorComics.leerJSON(textoRutaArchivo.getText());
+					listaComicsLeidos = listaNuevosComics;
+					for (Comic comicActual: listaComicsLeidos) {
+						modelo.addRow(new Object[] {comicActual.getId(),comicActual.getTitulo(),comicActual.getDescripcion(),comicActual.getNumeroDePaginas(),comicActual.getNumeroPublicacion(),comicActual.getSerie(),comicActual.getFormato(),comicActual.getImagen()});
+					}
+				}
+				
+				if (listaNuevosComics.size() == 0) {
+					JOptionPane.showMessageDialog(null, "El archivo "+textoRutaArchivo.getText()+" no contiene ningún cómic", "Cómics no encontrados", JOptionPane.INFORMATION_MESSAGE);
+				}
+				listaComicsLeidos = listaNuevosComics;
+				
+				if (listaNuevosComics.size() > 0) {
+					btnAbrirVistaIndividual.setEnabled(true);
+				} else {
+					btnAbrirVistaIndividual.setEnabled(false);
+				}
+			}
+		});
+		
+		panelSeleccionRuta_1.add(btnCargarDatosApi);
+		
+		JComboBox comboBoxTipoArchivo = new JComboBox();
+		comboBoxTipoArchivo.setModel(new DefaultComboBoxModel(new String[] {"JSON", "XML", "SQL"}));
+		comboBoxTipoArchivo.setBounds(599, 12, 133, 32);
+		panelSeleccionRuta_1.add(comboBoxTipoArchivo);
+		
+		JButton btnExportarArchivo = new JButton("Exportar Archivo");
+		btnExportarArchivo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ManejadorComics manejador = new ManejadorComics();
+				String tipoArchivo = (String) comboBoxTipoArchivo.getSelectedItem();
+				String rutaNuevoArchivo = "";
+				
+				if (!tipoArchivo.equals("SQL")) {
+					JFileChooser fileChooser = new JFileChooser(".");
+	                fileChooser.setDialogTitle("Seleccione la ubicación del archivo");
+	                fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+	                fileChooser.setSelectedFile(new File("comicsExportados."+tipoArchivo.toLowerCase()));
+	                FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML files (*.xml)", "xml");
+	                fileChooser.setFileFilter(xmlFilter);
+
+	                int userSelection = fileChooser.showSaveDialog(null);
+
+	                if (userSelection == JFileChooser.APPROVE_OPTION) {
+	                    File archivoGuardar = fileChooser.getSelectedFile();
+
+	                    rutaNuevoArchivo = archivoGuardar.getAbsolutePath();
+	                }
+				}
+				
+				if (!rutaNuevoArchivo.toLowerCase().endsWith("."+tipoArchivo.toLowerCase())) {
+					rutaNuevoArchivo += "."+tipoArchivo.toLowerCase();
+				}
+				
+				switch (tipoArchivo) {
+				case "XML":
+					manejador.escribirXML(listaComicsLeidos, rutaNuevoArchivo);
+					JOptionPane.showMessageDialog(null, "El archivo ha sido guardado como "+rutaNuevoArchivo, "Archivo creado", JOptionPane.INFORMATION_MESSAGE);
+					break;
+				case "SQL":
+					manejador.insertarSQL(listaComicsLeidos);
+					JOptionPane.showMessageDialog(null, "Se han insertado "+listaComicsLeidos.size()+" registros en la base de datos", "Tuplas insertadas", JOptionPane.INFORMATION_MESSAGE);
+					break;
+				case "JSON":
+					manejador.escribirJSON(listaComicsLeidos, rutaNuevoArchivo);
+					JOptionPane.showMessageDialog(null, "El archivo ha sido guardado como "+rutaNuevoArchivo, "Archivo creado", JOptionPane.INFORMATION_MESSAGE);
+					break;
+				}
+			}
+		});
+		btnExportarArchivo.setMargin(new Insets(2, 10, 2, 10));
+		btnExportarArchivo.setForeground(Color.WHITE);
+		btnExportarArchivo.setFont(new Font("Ebrima", Font.BOLD, 13));
+		btnExportarArchivo.setBackground(new Color(128, 128, 255));
+		btnExportarArchivo.setBounds(742, 11, 133, 32);
+		panelSeleccionRuta_1.add(btnExportarArchivo);
 	}
 }

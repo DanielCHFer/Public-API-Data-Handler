@@ -233,7 +233,7 @@ public class VistaIndividual extends JFrame {
         btnBuscarID.setBounds(387, 181, 33, 32);
         panel.add(btnBuscarID);
         
-        cargarImagenes();
+        //cargarImagenes();
         
         comicActual = this.listaComics.get(0);
         ActualizarVista();
