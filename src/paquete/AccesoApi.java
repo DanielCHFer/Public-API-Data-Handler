@@ -23,7 +23,7 @@ public class AccesoApi {
 	
 	private void obtenerResultado() {
 		try {
-            String baseUrl = "https://gateway.marvel.com:443/v1/public/characters/1010787/comics?limit=20";
+            String baseUrl = "https://gateway.marvel.com:443/v1/public/characters/1010787/comics?limit=100";
             String timeStamp = Long.toString(System.currentTimeMillis());
             String hash = DigestUtils.md5Hex(timeStamp + privateKey + publicKey);
 

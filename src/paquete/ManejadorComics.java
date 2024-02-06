@@ -52,13 +52,17 @@ public class ManejadorComics {
 	    StringJoiner valuesJoiner = new StringJoiner(", ");
 
 	    for (Comic comic : listaComics) {
-	        String tupla = String.format("(\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")", comic.getId(), comic.getTitulo(), comic.getDescripcion(), comic.getNumeroDePaginas(), comic.getNumeroPublicacion(), comic.getSerie(), comic.getFormato(), comic.getImagen());
+	        String tupla = String.format("(\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")", obtenerCampoValido(comic.getId()), obtenerCampoValido(comic.getTitulo()), obtenerCampoValido(comic.getDescripcion()), obtenerCampoValido(comic.getNumeroDePaginas()), obtenerCampoValido(comic.getNumeroPublicacion()), obtenerCampoValido(comic.getSerie()), obtenerCampoValido(comic.getFormato()), obtenerCampoValido(comic.getImagen()));
 	        valuesJoiner.add(tupla);
 	    }
 
 	    return inicioQuery + valuesJoiner.toString();
 	}
 	
+	public String obtenerCampoValido(String palabra) {
+		String palabraNueva = palabra.replace("\"", "'");
+		return palabraNueva;
+	}
 	public ArrayList<Comic> leerXML(String rutaArchivo) {
 		ArrayList<Comic> listaComics = new ArrayList<>();
 		

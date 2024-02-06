@@ -202,7 +202,7 @@ public class VistaIndividual extends JFrame {
         botonComicAnterior.setBounds(449, 448, 132, 27);
         panel.add(botonComicAnterior);
         
-        botonComicSiguiente = new JButton(">>>>");
+        botonComicSiguiente = new JButton(">>>>"); 
         botonComicSiguiente.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		int indiceComics = listaComics.indexOf(comicActual);
@@ -233,7 +233,7 @@ public class VistaIndividual extends JFrame {
         btnBuscarID.setBounds(387, 181, 33, 32);
         panel.add(btnBuscarID);
         
-        //cargarImagenes();
+        cargarImagenes();
         
         comicActual = this.listaComics.get(0);
         ActualizarVista();
